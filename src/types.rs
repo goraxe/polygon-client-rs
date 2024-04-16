@@ -15,7 +15,7 @@ pub struct ReferenceTickersResponseTickerV3 {
     pub name: String,
     pub market: String,
     pub locale: String,
-    pub primary_exchange: String,
+    pub primary_exchange: Option<String>,
     #[serde(rename = "type")]
     pub ticker_type: Option<String>,
     pub active: bool,
@@ -98,14 +98,14 @@ pub type ReferenceTickerDetailsResponse = ReferenceTickerDetailsResponseV1;
 // vX/reference/tickers/{ticker}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Debug, Default)]
 pub struct Address {
     pub address1: String,
     pub city: String,
     pub state: String,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Debug, Default)]
 pub struct ReferenceTickerDetailsResultsVX {
     pub ticker: String,
     pub name: String,
@@ -119,9 +119,9 @@ pub struct ReferenceTickerDetailsResultsVX {
     pub cik: String,
     pub composite_fiji: Option<String>,
     pub share_class_fiji: Option<String>,
-    pub last_updated_utc: String,
+    pub last_updated_utc: Option<String>,
     pub delisted_utc: Option<String>,
-    pub outstanding_shares: f64,
+    pub outstanding_shares: Option<f64>,
     pub market_cap: f64,
     pub phone_number: String,
     pub address: Address,
@@ -132,9 +132,20 @@ pub struct ReferenceTickerDetailsResponseVX {
     pub results: ReferenceTickerDetailsResultsVX,
     pub status: String,
     pub request_id: String,
+    #[serde(default)]
     pub count: u32,
 }
 
+impl Default for ReferenceTickerDetailsResponseVX {
+    fn default() -> Self {
+        Self {
+            count: 1,
+            request_id: "".to_string(),
+            status: "".to_string(),
+            results: ReferenceTickerDetailsResultsVX::default()
+        }
+    }
+}
 //
 // v2/reference/news
 //
@@ -788,17 +799,30 @@ pub struct ReferenceStockFinancialsVXResult {
     pub financials: FinancialDimensions,
     pub fiscal_period: String,
     pub fiscal_year: String,
-    pub source_filing_file_url: String,
+    pub source_filing_file_url: Option<String>,
     pub start_date: Option<String>,
 }
 
 #[derive(Clone, Deserialize, Debug)]
 pub struct ReferenceStockFinancialsVXResponse {
+    #[serde(default)]
     pub count: u32,
     pub next_url: String,
     pub request_id: String,
     pub results: Vec<ReferenceStockFinancialsVXResult>,
     pub status: String,
+}
+
+impl Default for ReferenceStockFinancialsVXResponse {
+    fn default() -> Self {
+        Self{
+            count: 1,
+            next_url: r#""#.to_string(),
+            request_id: "".to_string(),
+            results: Vec::new(),
+            status: "".to_string()
+        }
+    }
 }
 
 //
@@ -962,7 +986,7 @@ pub struct StockEquitiesDailyOpenCloseResponse {
 #[derive(Clone, Deserialize, Debug)]
 pub struct StockEquitiesAggregates {
     pub T: Option<String>,
-    pub av: Option<u64>,
+    pub av: Option<f64>,
     pub c: f64,
     pub h: f64,
     pub l: f64,
@@ -1037,9 +1061,9 @@ pub struct StockEquitiesQuote {
 pub struct StockEquitiesTickerSnapshot {
     pub day: StockEquitiesAggregates,
     #[serde(rename = "lastQuote")]
-    pub last_quote: StockEquitiesQuote,
+    pub last_quote: Option<StockEquitiesQuote>,
     #[serde(rename = "lastTrade")]
-    pub last_trade: StockEquitiesHistoricTrade,
+    pub last_trade: Option<StockEquitiesHistoricTrade>,
     pub min: StockEquitiesAggregates,
     #[serde(rename = "prevDay")]
     pub prev_day: StockEquitiesAggregates,
