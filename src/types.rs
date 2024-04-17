@@ -1,5 +1,5 @@
 //! Data types associated with the REST interfaces.
-use serde;
+use serde::{self, Serialize};
 use serde::Deserialize;
 
 use std::collections::HashMap;
@@ -983,7 +983,7 @@ pub struct StockEquitiesDailyOpenCloseResponse {
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct StockEquitiesAggregates {
     pub T: Option<String>,
     pub av: Option<f64>,
