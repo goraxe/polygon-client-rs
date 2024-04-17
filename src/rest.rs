@@ -83,7 +83,7 @@ impl RESTClient {
         }
     }
 
-    async fn send_request<RespType>(
+    pub async fn send_request<RespType>(
         &self,
         uri: &str,
         query_params: &HashMap<&str, &str>,
