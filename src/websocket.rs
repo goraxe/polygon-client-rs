@@ -103,7 +103,7 @@ enum Messages {
 
 pub struct WebSocketClient {
     pub auth_key: String,
-    websocket: WebSocket<tungstenite::stream::MaybeTlsStream<std::net::TcpStream>>,
+    pub websocket: WebSocket<tungstenite::stream::MaybeTlsStream<std::net::TcpStream>>,
 }
 
 //static DEFAULT_WS_HOST: &str = "wss://socket.polygon.io";
