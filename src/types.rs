@@ -9,7 +9,7 @@ use std::fmt;
 // v3/reference/tickers
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickersResponseTickerV3 {
     pub ticker: String,
     pub name: String,
@@ -26,7 +26,7 @@ pub struct ReferenceTickersResponseTickerV3 {
     pub last_updated_utc: String,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickersResponseV3 {
     pub results: Vec<ReferenceTickersResponseTickerV3>,
     pub status: String,
@@ -41,14 +41,14 @@ pub type ReferenceTickersResponse = ReferenceTickersResponseV3;
 // v2/reference/types
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickerTypesResultsV2 {
     pub types: HashMap<String, String>,
     #[serde(rename = "indexTypes")]
     pub index_types: HashMap<String, String>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickerTypesResponseV2 {
     pub status: String,
     pub results: ReferenceTickerTypesResultsV2,
@@ -60,7 +60,7 @@ pub type ReferenceTickerTypesResponse = ReferenceTickerTypesResponseV2;
 // v1/meta/symbols/{stocksTicker}/company
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickerDetailsResponseV1 {
     pub logo: String,
     pub exchange: String,
@@ -98,14 +98,14 @@ pub type ReferenceTickerDetailsResponse = ReferenceTickerDetailsResponseV1;
 // vX/reference/tickers/{ticker}
 //
 
-#[derive(Clone, Deserialize, Debug, Default)]
+#[derive(Clone, Deserialize, Serialize, Debug, Default)]
 pub struct Address {
     pub address1: String,
     pub city: String,
     pub state: String,
 }
 
-#[derive(Clone, Deserialize, Debug, Default)]
+#[derive(Clone, Deserialize, Serialize, Debug, Default)]
 pub struct ReferenceTickerDetailsResultsVX {
     pub ticker: String,
     pub name: String,
@@ -127,7 +127,7 @@ pub struct ReferenceTickerDetailsResultsVX {
     pub address: Address,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickerDetailsResponseVX {
     pub results: ReferenceTickerDetailsResultsVX,
     pub status: String,
@@ -150,7 +150,7 @@ impl Default for ReferenceTickerDetailsResponseVX {
 // v2/reference/news
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Publisher {
     pub name: String,
     pub homepage_url: String,
@@ -158,7 +158,7 @@ pub struct Publisher {
     pub favicon_url: String,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickerNewsResultsV2 {
     pub id: String,
     pub publisher: Publisher,
@@ -173,7 +173,7 @@ pub struct ReferenceTickerNewsResultsV2 {
     pub keywords: Option<Vec<String>>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceTickerNewsResponseV2 {
     pub results: Vec<ReferenceTickerNewsResultsV2>,
     pub status: String,
@@ -188,13 +188,13 @@ pub type ReferenceTickerNewsResponse = ReferenceTickerNewsResponseV2;
 // v2/reference/markets
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Market {
     pub market: String,
     pub desc: String,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceMarketsResponseV2 {
     pub status: String,
     pub results: Vec<Market>,
@@ -206,13 +206,13 @@ pub type ReferenceMarketsResponse = ReferenceMarketsResponseV2;
 // v2/reference/locales
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Locale {
     pub locale: String,
     pub name: String,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceLocalesResponseV2 {
     pub status: String,
     pub results: Vec<Locale>,
@@ -224,7 +224,7 @@ pub type ReferenceLocalesResponse = ReferenceLocalesResponseV2;
 // v2/reference/splits/{stockTicker}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockSplitsResultV2 {
     pub ticker: String,
     #[serde(rename = "exDate")]
@@ -238,7 +238,7 @@ pub struct ReferenceStockSplitsResultV2 {
     pub forfactor: Option<u32>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockSplitsResponseV2 {
     pub status: String,
     pub count: u32,
@@ -251,7 +251,7 @@ pub type ReferenceStockSplitsResponse = ReferenceStockSplitsResponseV2;
 // v2/reference/dividends/{stocksTicker}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockDividendsResultV2 {
     pub ticker: String,
     #[serde(rename = "exDate")]
@@ -263,7 +263,7 @@ pub struct ReferenceStockDividendsResultV2 {
     pub amount: f64,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockDividendsResponseV2 {
     pub status: String,
     pub count: u32,
@@ -276,7 +276,7 @@ pub type ReferenceStockDividendsResponse = ReferenceStockDividendsResponseV2;
 // v2/reference/financials/{stocksTicker}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockFinancialsResultV2 {
     pub ticker: String,
     pub period: String,
@@ -486,7 +486,7 @@ pub struct ReferenceStockFinancialsResultV2 {
     pub working_capital: Option<i64>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockFinancialsResponseV2 {
     pub status: String,
     pub results: Vec<ReferenceStockFinancialsResultV2>,
@@ -775,7 +775,7 @@ lazy_static! {
     };
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct FundamentalAccountingConcept {
     pub formula: Option<String>,
     pub label: Option<String>,
@@ -783,7 +783,7 @@ pub struct FundamentalAccountingConcept {
     pub unit: Option<String>,
     pub value: Option<f64>,
 }
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct FinancialDimensions {
     pub balance_sheet: HashMap<String, FundamentalAccountingConcept>,
     pub cash_flow_statement: HashMap<String, FundamentalAccountingConcept>,
@@ -791,7 +791,7 @@ pub struct FinancialDimensions {
     pub income_statement: HashMap<String, FundamentalAccountingConcept>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockFinancialsVXResult {
     pub cik: String,
     pub company_name: String,
@@ -803,7 +803,7 @@ pub struct ReferenceStockFinancialsVXResult {
     pub start_date: Option<String>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceStockFinancialsVXResponse {
     #[serde(default)]
     pub count: u32,
@@ -829,7 +829,7 @@ impl Default for ReferenceStockFinancialsVXResponse {
 // v1/marketstatus/upcoming
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct MarketStatusUpcoming {
     pub exchange: String,
     pub name: String,
@@ -845,7 +845,7 @@ pub type ReferenceMarketStatusUpcomingResponse = Vec<MarketStatusUpcoming>;
 // v1/marketstatus/now
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ReferenceMarketStatusNowResponseV1 {
     pub market: String,
     #[serde(rename = "earlyHours")]
@@ -864,7 +864,7 @@ pub type ReferenceMarketStatusNowResponse = ReferenceMarketStatusNowResponseV1;
 // v1/meta/exchanges
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesExchangeV1 {
     pub id: u64,
     #[serde(rename = "type")]
@@ -900,7 +900,7 @@ pub type StockEquitiesConditionMappingsResponse = HashMap<u32, String>;
 // v1/meta/crypto-exchanges
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoExchange {
     pub id: u32,
     #[serde(rename = "type")]
@@ -919,7 +919,7 @@ pub type CryptoCryptoExchangesResponse = Vec<CryptoExchange>;
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesHistoricTrade {
     pub T: Option<String>,
     pub f: Option<u64>,
@@ -936,7 +936,7 @@ pub struct StockEquitiesHistoricTrade {
     pub z: Option<u64>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesHistoricTradesV2Response {
     pub request_id: String,
     pub status: String,
@@ -949,7 +949,7 @@ pub type StockEquitiesHistoricTradesResponse = StockEquitiesHistoricTradesV2Resp
 // v2/last/nbbo/{ticker}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesLastQuoteForASymbolV2Response {
     pub request_id: String,
     pub status: String,
@@ -962,7 +962,7 @@ pub type StockEquitiesLastQuoteForASymbolResponse = StockEquitiesLastQuoteForASy
 // v1/open-close/{ticker}/{date}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesDailyOpenCloseResponse {
     #[serde(rename = "afterHours")]
     pub after_hours: f64,
@@ -983,7 +983,7 @@ pub struct StockEquitiesDailyOpenCloseResponse {
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Serialize, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesAggregates {
     pub T: Option<String>,
     pub av: Option<f64>,
@@ -997,7 +997,7 @@ pub struct StockEquitiesAggregates {
     pub vw: Option<f64>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesAggregatesResponse {
     pub ticker: String,
     pub adjusted: bool,
@@ -1016,7 +1016,7 @@ pub struct StockEquitiesAggregatesResponse {
 // v2/aggs/grouped/locale/{locale}/market/{market}/{date}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesGroupedDailyResponse {
     pub adjusted: bool,
     #[serde(rename = "queryCount")]
@@ -1031,7 +1031,7 @@ pub struct StockEquitiesGroupedDailyResponse {
 // v2/aggs/ticker/{ticker}/prev
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesPreviousCloseResponse {
     pub ticker: String,
     pub adjusted: bool,
@@ -1049,7 +1049,7 @@ pub struct StockEquitiesPreviousCloseResponse {
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesQuote {
     pub P: f64,
     pub S: u64,
@@ -1058,7 +1058,7 @@ pub struct StockEquitiesQuote {
     pub t: u64,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesTickerSnapshot {
     pub day: StockEquitiesAggregates,
     #[serde(rename = "lastQuote")]
@@ -1076,7 +1076,7 @@ pub struct StockEquitiesTickerSnapshot {
     pub updated: u64,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesSnapshotAllTickersResponse {
     pub count: u32,
     pub status: String,
@@ -1087,7 +1087,7 @@ pub struct StockEquitiesSnapshotAllTickersResponse {
 // v2/snapshot/locale/us/markets/stocks/{direction}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct StockEquitiesSnapshotGainersLosersResponse {
     pub status: String,
     pub tickers: Vec<StockEquitiesTickerSnapshot>,
@@ -1098,7 +1098,7 @@ pub struct StockEquitiesSnapshotGainersLosersResponse {
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ForexEquitiesAggregates {
     pub T: Option<String>,
     pub c: f64,
@@ -1111,7 +1111,7 @@ pub struct ForexEquitiesAggregates {
     pub vw: Option<f64>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ForexCurrenciesAggregatesResponse {
     pub ticker: String,
     #[serde(rename = "queryCount")]
@@ -1128,7 +1128,7 @@ pub struct ForexCurrenciesAggregatesResponse {
 // v2/aggs/grouped/locale/global/market/fx/{date}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ForexCurrenciesGroupedDailyResponse {
     #[serde(rename = "queryCount")]
     pub query_count: u32,
@@ -1145,7 +1145,7 @@ pub struct ForexCurrenciesGroupedDailyResponse {
 // v2/aggs/ticker/{forex_ticker}/prev
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct ForexCurrenciesPreviousCloseResponse {
     pub ticker: String,
     #[serde(rename = "queryCount")]
@@ -1163,7 +1163,7 @@ pub struct ForexCurrenciesPreviousCloseResponse {
 // v1/open-close/crypto/{from}/{to}/{date}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoOpenTrades {
     pub x: u32,
     pub p: f64,
@@ -1173,7 +1173,7 @@ pub struct CryptoOpenTrades {
     pub t: u64,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoDailyOpenCloseResponse {
     pub symbol: String,
     #[serde(rename = "isUTC")]
@@ -1190,7 +1190,7 @@ pub struct CryptoDailyOpenCloseResponse {
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoAggregates {
     pub T: Option<String>,
     pub c: f64,
@@ -1203,7 +1203,7 @@ pub struct CryptoAggregates {
     pub vw: Option<f64>,
 }
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoAggregatesResponse {
     pub ticker: String,
     #[serde(rename = "queryCount")]
@@ -1220,7 +1220,7 @@ pub struct CryptoAggregatesResponse {
 // v2/aggs/grouped/locale/global/market/crypto/{date}
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoGroupedDailyResponse {
     #[serde(rename = "queryCount")]
     pub query_count: u32,
@@ -1237,7 +1237,7 @@ pub struct CryptoGroupedDailyResponse {
 // v2/aggs/ticker/{crypto_ticker}/prev
 //
 
-#[derive(Clone, Deserialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct CryptoPreviousCloseResponse {
     pub ticker: String,
     #[serde(rename = "queryCount")]

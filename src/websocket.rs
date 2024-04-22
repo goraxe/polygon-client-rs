@@ -20,6 +20,7 @@
 //! }
 //! ```
 use std::env;
+use std::fmt::Display;
 use url::Url;
 
 use serde;
@@ -33,18 +34,80 @@ pub const FOREX_CLUSTER: &str = "forex";
 pub const CRYPTO_CLUSTER: &str = "crypto";
 
 #[derive(Clone, Deserialize, Debug)]
-struct ConnectedMessage {
+#[serde(tag="ev")]
+struct status {
     pub ev: String,
     pub status: String,
     pub message: String,
 }
+
+impl Display for status {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "ev: {}: status: {}, message: {}\n",
+            self.ev, self.status, self.message
+        )
+    }
+}
+
+#[derive(Clone, Deserialize, Debug)]
+#[serde(tag="ev")]
+#[serde(rename = "A")]
+struct AggregateMessage {
+    ev: String,
+    #[serde(rename = "sym")]
+    pub ticker: String,
+    #[serde(rename = "v" )]
+    pub volume: u64,
+    #[serde(rename = "av" )]
+    pub accumulated_volume: u64,
+    #[serde(rename = "op" )]
+    pub open_price: f64,
+    #[serde(rename = "vw" )]
+    pub volume_weighted_price: f64,
+    #[serde(rename = "o" )]
+    pub open: f64,
+    #[serde(rename = "c" )]
+    pub close: f64,
+    #[serde(rename = "h" )]
+    pub high: f64,
+    #[serde(rename = "l" )]
+    pub low: f64,
+    #[serde(rename = "a" )]
+    pub average_price: f64,
+    #[serde(rename = "z" )]
+    pub average_trade_size: u64,
+    #[serde(rename = "s" )]
+    pub start: u64,
+    #[serde(rename = "e" )]
+    pub end: u64,
+    #[serde(rename = "otc" )]
+    pub otc: Option<bool>,
+}
+
+impl Display for AggregateMessage {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "ticker: {}" , self.ticker)
+    }
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum Messages {
+    status(Vec<status>),
+    A(Vec<AggregateMessage>)
+}
+
+
 
 pub struct WebSocketClient {
     pub auth_key: String,
     websocket: WebSocket<tungstenite::stream::MaybeTlsStream<std::net::TcpStream>>,
 }
 
-static DEFAULT_WS_HOST: &str = "wss://socket.polygon.io";
+//static DEFAULT_WS_HOST: &str = "wss://socket.polygon.io";
+static DEFAULT_WS_HOST: &str = "wss://delayed.polygon.io";
 
 impl WebSocketClient {
     /// Returns a new WebSocket client.
@@ -120,7 +183,7 @@ impl WebSocketClient {
 
 #[cfg(test)]
 mod tests {
-    use crate::websocket::ConnectedMessage;
+    use crate::websocket::status;
     use crate::websocket::WebSocketClient;
     use crate::websocket::STOCKS_CLUSTER;
 
@@ -134,14 +197,54 @@ mod tests {
     #[test]
     fn test_receive() {
         let mut socket = WebSocketClient::new(STOCKS_CLUSTER, None);
+
         let res = socket.receive();
         assert_eq!(res.is_ok(), true);
         let msg = res.unwrap();
         assert_eq!(msg.is_text(), true);
         let msg_str = msg.into_text().unwrap();
-        let messages: Vec<ConnectedMessage> = serde_json::from_str(&msg_str).unwrap();
+        let messages: Vec<status> = serde_json::from_str(&msg_str).unwrap();
         let connected = messages.first().unwrap();
         assert_eq!(connected.ev, "status");
         assert_eq!(connected.status, "connected");
+
+        let params = vec!["A.MSFT"];
+        socket.subscribe(&params);
+
+        for _n in 1..5 {
+            let res = socket.receive();
+            assert_eq!(res.is_ok(), true);
+            let msg = res.unwrap();
+            if msg.is_text() {
+                let msg_str = msg.into_text().unwrap();
+                println!("decoding message: {}", msg_str);
+                let message: crate::websocket::Messages = serde_json::from_str(&msg_str).unwrap();
+
+                   // print!("message: \n\t{}", message)
+                match message { //serde_json::from_str::<crate::websocket::Messages>(&msg_str) {
+                    crate::websocket::Messages::status(v) => println!("we got messages: {:?}", v.first()),
+                    crate::websocket::Messages::A(v) => println!("we got messages: {:?}", v.first()),
+
+                };
+
+            }
+            else if msg.is_ping() {
+                print!("message: is ping\n");
+                socket.websocket.write_message(tungstenite::Message::Pong(vec!(1)));
+            }
+            else if msg.is_pong() {
+                print!("message: is pong\n")
+            }
+            else if msg.is_close() {
+                print!("message: is close\n");
+                break;
+            }
+            else if msg.is_empty() {
+                print!("message: is empty\n")
+            }
+            else if msg.is_binary() {
+                print!("message: is binary\n")
+            }
+        }
     }
 }
