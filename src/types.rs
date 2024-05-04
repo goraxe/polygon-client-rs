@@ -983,7 +983,7 @@ pub struct StockEquitiesDailyOpenCloseResponse {
 //
 
 #[allow(non_snake_case)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Clone, Deserialize, Serialize, Debug, PartialEq)]
 pub struct StockEquitiesAggregates {
     pub T: Option<String>,
     pub av: Option<f64>,
