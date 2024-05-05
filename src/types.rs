@@ -1008,7 +1008,7 @@ pub struct StockEquitiesAggregatesResponse {
     pub results_count: u32,
     pub count: Option<u32>,
     pub status: String,
-    pub results: Vec<StockEquitiesAggregates>,
+    pub results: Option<Vec<StockEquitiesAggregates>>,
     pub next_url: Option<String>,
 }
 
