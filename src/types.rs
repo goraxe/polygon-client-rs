@@ -1006,7 +1006,7 @@ pub struct StockEquitiesAggregatesResponse {
     pub request_id: String,
     #[serde(rename = "resultsCount")]
     pub results_count: u32,
-    pub count: u32,
+    pub count: Option<u32>,
     pub status: String,
     pub results: Vec<StockEquitiesAggregates>,
     pub next_url: Option<String>,
